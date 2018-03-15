@@ -100,6 +100,12 @@ def write_article(article):
 
 
 def export(h):
+    try:
+        os.mkdir('articles')
+    except OSError:
+        # directory exists. I hope. should probably check for explict error code
+        pass
+
     for collection in h.collections.keys():
         articles = h.get_collection_articles(collection)
         for article_id in map(lambda a: a['id'], articles):
