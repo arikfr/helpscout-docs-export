@@ -43,8 +43,7 @@ class HelpScout(object):
     def get_collection_articles(self, collection_id, status='published'):
         params = {
             'pageSize': 100, 
-            'status': status,
-            'page': page
+            'status': status
         }
         url = 'https://docsapi.helpscout.net/v1/collections/{id}/articles'.format(id=collection_id)
         response = self.s.get(url, params=params)
