@@ -40,15 +40,30 @@ class HelpScout(object):
 
         return self._categories
 
-    def get_collection_articles(self, collection_id, status='published'):
+    def get_collection_articles(self, collection_id, status='published', page=1):
         params = {
             'pageSize': 100, 
             'status': status,
+            'page': page
         }
-
         url = 'https://docsapi.helpscout.net/v1/collections/{id}/articles'.format(id=collection_id)
         response = self.s.get(url, params=params)
-        return response.json()['articles']['items']
+        if response.json()['articles']['pages'] > 1:
+            i = 2
+            items = response.json()['articles']['items']
+            while i < response.json()['articles']['pages'] + 1:
+                params = {
+                    'pageSize': 100, 
+                    'status': status,
+                    'page': i
+                }
+                response = self.s.get(url, params=params)
+                items = items + response.json()['articles']['items']
+                i += 1
+            return items
+        else:
+          response = self.s.get(url, params=params)
+          return response.json()['articles']['items']
 
     def get_article(self, article_id):
         url = 'https://docsapi.helpscout.net/v1/articles/{id}'.format(id=article_id)
