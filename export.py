@@ -40,7 +40,7 @@ class HelpScout(object):
 
         return self._categories
 
-    def get_collection_articles(self, collection_id, status='published', page=1):
+    def get_collection_articles(self, collection_id, status='published'):
         params = {
             'pageSize': 100, 
             'status': status,
